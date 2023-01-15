@@ -3,15 +3,16 @@ from core.plugin_core import PluginCore
 from tkinter import LEFT, Entry, Frame, Label, TOP, PhotoImage, StringVar, ttk
 import customtkinter
 from core.plugin_manager import PluginManager
-from gui.main_window import MAIN_BG, SIDE_MENU_BG, SIDE_MENU_BG_ACTIVE_HOVER
+from gui.components.generic_button import GenericButton
+import gui.main_window as mainwindow
 from PIL import Image
 from plugins.Autoloot.autoloot_thread import AutoLootThread
+from gui.components.title_frame import TitleFrame
 import keyboard
 import yaml
 
 class Plugin(PluginCore):
-    def __init__(self, pluginManager):
-        self.pluginManager = pluginManager
+    def __init__(self):
         self.currentDir = str(pathlib.Path(__file__).parent.resolve())
         with open(self.currentDir + "\plugin_config.yml", "r") as f:
             config = yaml.safe_load(f)
@@ -22,17 +23,13 @@ class Plugin(PluginCore):
 
     def get_frame(self, master):
         self.master = master
-        self.font_small = customtkinter.CTkFont(family="Inter V Medium", size=16)
-        self.font_big = customtkinter.CTkFont(family="Inter", size=30)
         self.frame = Frame(master)
-        self.title = Label(self.frame, text="Autoloot", font=self.font_big, background=MAIN_BG)
-        self.title.pack(side=TOP, fill="x", expand=True, pady=15)
-        self.titleSeparator = Frame(self.frame, height=1, background=SIDE_MENU_BG)
-        self.titleSeparator.pack(side=TOP,fill="x", padx=150)
-        self.hotKeyFrame = Frame(self.frame, pady=40, background=MAIN_BG)
+        self.titleFrame = TitleFrame(self.frame, 'Autoloot')
+        self.titleFrame.pack(side=TOP, fill="x", expand=True)
+        self.hotKeyFrame = Frame(self.frame, pady=40, background=mainwindow.MAIN_BG)
         self.hotKeyFrame.pack(side=TOP)
-        self.hotKeyLabel = Label(self.hotKeyFrame, font=self.font_small, background=MAIN_BG, text=self.autolootKey)
-        self.hotKeyButton = customtkinter.CTkButton(self.hotKeyFrame, text="Modifier", command=self.autoloot_key_choice, hover_color=SIDE_MENU_BG_ACTIVE_HOVER, fg_color=SIDE_MENU_BG)
+        self.hotKeyLabel = Label(self.hotKeyFrame, font=mainwindow.FONT_GENERAL, background=mainwindow.MAIN_BG, text=self.autolootKey)
+        self.hotKeyButton = GenericButton(self.hotKeyFrame, text="Modifier", command=self.autoloot_key_choice)
         self.hotKeyLabel.pack(anchor="c")
         self.hotKeyButton.pack(anchor="c")
         

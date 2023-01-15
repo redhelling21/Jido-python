@@ -23,7 +23,7 @@ class PluginManager():
             pluginInfos.isLoaded = False
             self.availablePlugins[pluginInfos.pluginName] = pluginInfos
         for pluginToLoad in config['pluginsToLoad'] :
-            self.loadedPlugins[pluginToLoad] = importlib.import_module(self.availablePlugins[pluginToLoad].pluginPath).Plugin(self)
+            self.loadedPlugins[pluginToLoad] = importlib.import_module(self.availablePlugins[pluginToLoad].pluginPath).Plugin()
             self.availablePlugins[pluginToLoad].isLoaded = True
 
 

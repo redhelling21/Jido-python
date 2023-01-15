@@ -5,6 +5,7 @@ import customtkinter
 from ctypes import windll
 import ctypes
 import PIL as pil
+from gui.components.menu_button import MenuButton
 from gui.general_frame import *
 
 #   shortcuts to the WinAPI functionality
@@ -28,13 +29,20 @@ SWP_NOMOVE = 2
 SWP_NOSIZE = 1
 SWP_FRAMECHANGED = 32
 
-
+root = Tk()  # Make temporary window for app to start
+root.withdraw()
 ASSET_PATH = Path(__file__).parent / Path("./assets")
 SIDE_MENU_BG = "#4d8388"
 SIDE_MENU_BG_ACTIVE = "#45757a"
 SIDE_MENU_BG_ACTIVE_HOVER = "#5e8f93"
 MAIN_BG = "#FFFFFF"
 SIDEBAR_SIZE = 260
+FONT_MENU = customtkinter.CTkFont(family="Inter V Medium", size=15)
+FONT_TITLE = customtkinter.CTkFont(family="Inter", size=30)
+FONT_COMPONENT = customtkinter.CTkFont(family="Inter V Medium", size=12)
+FONT_GENERAL = customtkinter.CTkFont(family="Inter V Medium", size=13)
+FONT_TABLE = customtkinter.CTkFont(family="Inter V Medium", size=12)
+FONT_TABLE_HEADING = customtkinter.CTkFont(family="Inter V Medium", size=14)
 
 def mainWindow(config, pluginManager, *args, **kwargs):
     MainWindow(config, pluginManager, *args, **kwargs)
@@ -46,8 +54,6 @@ class MainWindow(Toplevel):
     pluginFrames = {}
 
     def __init__(self, config, pluginManager, *args, **kwargs):
-        self.font_small = customtkinter.CTkFont(family="Inter V Medium", size=16)
-        self.font_big = customtkinter.CTkFont(family="Inter", size=30)
         self.loadedPlugins = pluginManager.get_loaded_plugins()
         Toplevel.__init__(self, *args, **kwargs)
         self.protocol("WM_DELETE_WINDOW", self.close_window)
@@ -56,12 +62,7 @@ class MainWindow(Toplevel):
         self.attributes('-transparentcolor', 'grey15')
         self.config(background='grey15')
 
-        self.canvas = Canvas(
-            self,
-            bg='grey15',
-            bd=1,
-            highlightthickness=1,
-            relief="flat")
+        self.canvas = Canvas(self)
         self.canvas.pack(fill=BOTH, expand=True)
 
         #region Sidebar
@@ -86,17 +87,10 @@ class MainWindow(Toplevel):
         #region Default buttons
 
         general_img = customtkinter.CTkImage(pil.Image.open("gui/assets/general_icon.png"))
-        general_btn = customtkinter.CTkButton(
+        general_btn = MenuButton(
             self.menuFrame,
-            font=self.font_small,
             image=general_img,
-            width=260,
-            height=40,
-            corner_radius=10,
-            hover_color=SIDE_MENU_BG_ACTIVE_HOVER,
             command=lambda : self.handle_menu('Général'),
-            cursor='hand2',
-            anchor=W,
             text='Général'
         )
         self.menuButtons['Général'] = general_btn
@@ -106,17 +100,10 @@ class MainWindow(Toplevel):
         #endregion
         for pluginName, plugin in self.loadedPlugins.items():
             img = customtkinter.CTkImage(pil.Image.open("plugins/"+pluginName+"/icon.png"))
-            btn = customtkinter.CTkButton(
+            btn = MenuButton(
                 self.menuFrame,
-                font=self.font_small,
                 image=img,
-                width=260,
-                height=40,
-                corner_radius=10,
-                hover_color=SIDE_MENU_BG_ACTIVE_HOVER,
                 command=lambda i=pluginName: self.handle_menu(i),
-                cursor='hand2',
-                anchor=W,
                 text=pluginName
             )
             self.menuButtons[pluginName] = btn
@@ -127,18 +114,18 @@ class MainWindow(Toplevel):
 
         #region Mainframe
 
-        self.mainCanvas = Canvas(self.canvas, background=MAIN_BG)
+        self.mainCanvas = Canvas(self.canvas, background=MAIN_BG, highlightthickness=0)
         self.mainCanvas.pack(fill=BOTH, side=LEFT, expand=True)
         self.mainCanvas.bind('<Configure>', self.main_canvas_width)
         
-        self.mainScrollableFrame = Frame(self.mainCanvas)
+        self.mainScrollableFrame = Frame(self.mainCanvas, background=MAIN_BG)
         self.mainScrollableFrame.pack(fill=BOTH, side=TOP, expand=True)
 
         self.mainScrollableFrame.bind('<Enter>', self._bound_to_mousewheel)
         self.mainScrollableFrame.bind('<Leave>', self._unbound_to_mousewheel)
         self.mainScrollableFrame.bind("<Configure>", lambda e: self.mainCanvas.configure(scrollregion=self.mainCanvas.bbox("all")))
 
-        self.mainCanvasFrame = self.mainCanvas.create_window((0, 0), window=self.mainScrollableFrame, anchor="n")
+        self.mainCanvasFrame = self.mainCanvas.create_window((0, 0), window=self.mainScrollableFrame, anchor="nw")
 
         self.pluginFrames['Général'] = GeneralFrame(config=config, master=self.mainScrollableFrame, pluginmanager=pluginManager)
         for pluginName, plugin in self.loadedPlugins.items():
