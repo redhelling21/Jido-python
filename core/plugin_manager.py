@@ -25,9 +25,6 @@ class PluginManager():
         for pluginToLoad in config['pluginsToLoad'] :
             self.loadedPlugins[pluginToLoad] = importlib.import_module(self.availablePlugins[pluginToLoad].pluginPath).Plugin(self)
             self.availablePlugins[pluginToLoad].isLoaded = True
-        if not ('General' in self.availablePlugins):
-            self.loadedPlugins['General'] = importlib.import_module('plugins.General.plugin').Plugin()
-            self.availablePlugins['General'].isLoaded = True
 
 
     def get_available_plugins(self):

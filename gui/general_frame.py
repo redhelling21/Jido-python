@@ -1,30 +1,25 @@
-import pathlib, os
-from core.plugin_core import PluginCore
-from tkinter import Entry, Frame, Label, TOP, PhotoImage, ttk
+from tkinter import *
+from tkinter import ttk
 import customtkinter
-from core.plugin_manager import PluginManager
-from gui.main_window import MAIN_BG, SIDE_MENU_BG
-from PIL import Image
+import gui.main_window as mainwindow
+import pathlib
 
-class Plugin(PluginCore):
-    def __init__(self, pluginManager):
-        self.pluginManager = pluginManager
-
-    def get_frame(self, master):
+class GeneralFrame(Frame):
+    def __init__(self, config, pluginmanager, master, *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
+        self.pluginManager = pluginmanager
         self.font_table_heading = customtkinter.CTkFont(family="Inter V Medium", size=14)
         self.font_table = customtkinter.CTkFont(family="Inter V Medium", size=12)
         self.font_small = customtkinter.CTkFont(family="Inter V Medium", size=16)
         self.font_big = customtkinter.CTkFont(family="Inter", size=30)
-        self.frame = Frame(master)
-        self.title = Label(self.frame, text="Général", font=self.font_big, background=MAIN_BG)
+        self.title = Label(self, text="Général", font=self.font_big, background=mainwindow.MAIN_BG)
         self.title.pack(side=TOP, fill="x", expand=True, pady=15)
-        self.titleSeparator = Frame(self.frame, height=1, background=SIDE_MENU_BG)
+        self.titleSeparator = Frame(self, height=1, background=mainwindow.SIDE_MENU_BG)
         self.titleSeparator.pack(side=TOP,fill="x", padx=150)
 
-        self.currentLocation = pathlib.Path(__file__).parent.resolve()
-        self.imgChecked = PhotoImage(file=self.currentLocation.joinpath('assets/checked.png'))
-        self.imgUnChecked = PhotoImage(file=self.currentLocation.joinpath('assets/unchecked.png'))
-        self.pluginTable = ttk.Treeview(self.frame, columns=(1, 2, 3))
+        self.imgChecked = PhotoImage(file='gui/assets/checked.png')
+        self.imgUnChecked = PhotoImage(file='gui/assets/unchecked.png')
+        self.pluginTable = ttk.Treeview(self, columns=(1, 2, 3))
         self.pluginTableStyle = ttk.Style(self.pluginTable)
         self.pluginTableStyle.configure("Treeview.Heading", font=(self.font_table_heading))
         self.pluginTableStyle.configure('Treeview', rowheight=24)
@@ -50,9 +45,7 @@ class Plugin(PluginCore):
         self.pluginTable.column('#1', stretch='no', width=max(max_name_width, 60))
         self.pluginTable.column('#2', stretch='yes', width=350)
         self.pluginTable.column('#3', stretch='no', width=max(max_version_width, 60))
-
-        return self.frame
-
+    
     def checkRow(self, event):
         rowId = self.pluginTable.identify_row(event.y)
         #TODO Simplifier

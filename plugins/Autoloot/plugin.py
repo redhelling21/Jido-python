@@ -1,5 +1,4 @@
-import pathlib, os
-import time
+import pathlib
 from core.plugin_core import PluginCore
 from tkinter import LEFT, Entry, Frame, Label, TOP, PhotoImage, StringVar, ttk
 import customtkinter

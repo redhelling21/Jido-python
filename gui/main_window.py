@@ -4,9 +4,8 @@ from tkinter import ttk
 import customtkinter
 from ctypes import windll
 import ctypes
-from PIL import Image
-
-from core.scrollable_frame import ScrollableFrame
+import PIL as pil
+from gui.general_frame import *
 
 #   shortcuts to the WinAPI functionality
 set_window_pos = ctypes.windll.user32.SetWindowPos
@@ -42,8 +41,8 @@ def mainWindow(config, pluginManager, *args, **kwargs):
 
 class MainWindow(Toplevel):
 
-    activeMenu = 'General'
-    pluginButtons = {}
+    activeMenu = 'Général'
+    menuButtons = {}
     pluginFrames = {}
 
     def __init__(self, config, pluginManager, *args, **kwargs):
@@ -84,8 +83,29 @@ class MainWindow(Toplevel):
         self.menuFrame = Frame(self.sidebar, width=SIDEBAR_SIZE, background=SIDE_MENU_BG, padx=15)
         self.menuFrame.pack(fill=Y, side=TOP, expand=True)
 
+        #region Default buttons
+
+        general_img = customtkinter.CTkImage(pil.Image.open("gui/assets/general_icon.png"))
+        general_btn = customtkinter.CTkButton(
+            self.menuFrame,
+            font=self.font_small,
+            image=general_img,
+            width=260,
+            height=40,
+            corner_radius=10,
+            hover_color=SIDE_MENU_BG_ACTIVE_HOVER,
+            command=lambda : self.handle_menu('Général'),
+            cursor='hand2',
+            anchor=W,
+            text='Général'
+        )
+        self.menuButtons['Général'] = general_btn
+        general_btn.configure(fg_color=SIDE_MENU_BG_ACTIVE)
+        general_btn.pack(side=TOP, pady=2)
+
+        #endregion
         for pluginName, plugin in self.loadedPlugins.items():
-            img = customtkinter.CTkImage(Image.open("plugins/"+pluginName+"/icon.png"))
+            img = customtkinter.CTkImage(pil.Image.open("plugins/"+pluginName+"/icon.png"))
             btn = customtkinter.CTkButton(
                 self.menuFrame,
                 font=self.font_small,
@@ -99,12 +119,8 @@ class MainWindow(Toplevel):
                 anchor=W,
                 text=pluginName
             )
-            self.pluginButtons[pluginName] = btn
-            #Setting to General by default
-            if pluginName == 'General':
-                btn.configure(fg_color=SIDE_MENU_BG_ACTIVE)
-            else:
-                btn.configure(fg_color='transparent')
+            self.menuButtons[pluginName] = btn
+            btn.configure(fg_color='transparent')
             btn.pack(side=TOP, pady=2)
 
         #endregion
@@ -123,13 +139,14 @@ class MainWindow(Toplevel):
         self.mainScrollableFrame.bind("<Configure>", lambda e: self.mainCanvas.configure(scrollregion=self.mainCanvas.bbox("all")))
 
         self.mainCanvasFrame = self.mainCanvas.create_window((0, 0), window=self.mainScrollableFrame, anchor="n")
-        
+
+        self.pluginFrames['Général'] = GeneralFrame(config=config, master=self.mainScrollableFrame, pluginmanager=pluginManager)
         for pluginName, plugin in self.loadedPlugins.items():
             self.pluginFrames[pluginName] = self.loadedPlugins[pluginName].get_frame(self.mainScrollableFrame)
         
-        self.mainFrame = self.pluginFrames['General']
+        self.mainFrame = self.pluginFrames['Général']
         self.mainFrame.configure(background=MAIN_BG)
-        self.mainFrame.pack(fill=BOTH, side=TOP, expand=True),
+        self.mainFrame.pack(fill=BOTH, side=LEFT, expand=True),
         
         
         #endregion
@@ -141,14 +158,14 @@ class MainWindow(Toplevel):
         self.quit() 
         self.destroy()
         
-    def handle_menu(self, pluginName):
-        if self.activeMenu == pluginName:
+    def handle_menu(self, menuItemName):
+        if self.activeMenu == menuItemName:
             return
-        self.pluginButtons[pluginName].configure(fg_color=SIDE_MENU_BG_ACTIVE, hover_color=SIDE_MENU_BG_ACTIVE)
-        self.pluginButtons[self.activeMenu].configure(fg_color='transparent', hover_color=SIDE_MENU_BG_ACTIVE_HOVER)
-        self.activeMenu = pluginName
+        self.menuButtons[menuItemName].configure(fg_color=SIDE_MENU_BG_ACTIVE, hover_color=SIDE_MENU_BG_ACTIVE)
+        self.menuButtons[self.activeMenu].configure(fg_color='transparent', hover_color=SIDE_MENU_BG_ACTIVE_HOVER)
+        self.activeMenu = menuItemName
         self.mainFrame.pack_forget()
-        self.mainFrame = self.pluginFrames[pluginName]
+        self.mainFrame = self.pluginFrames[menuItemName]
         self.mainFrame.configure(background=MAIN_BG)
         self.mainFrame.pack(fill=BOTH, side=LEFT, expand=True)
 
