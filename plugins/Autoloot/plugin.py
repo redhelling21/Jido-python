@@ -12,13 +12,11 @@ import keyboard
 import yaml
 
 class Plugin(PluginCore):
-    def __init__(self):
-        self.currentDir = str(pathlib.Path(__file__).parent.resolve())
-        with open(self.currentDir + "\plugin_config.yml", "r") as f:
-            config = yaml.safe_load(f)
-        self.autolootKey = config["hotkey"]
+    def __init__(self, config):
+        self.config=config
+        self.autolootKey = self.config['pluginConfig']['Autoloot']['hotkey']
         self.autolootThread = AutoLootThread()
-        keyboard.add_hotkey('maj', self.toggle_autoloot)
+        keyboard.add_hotkey(self.autolootKey, self.toggle_autoloot)
         self.autolootThread.start()
 
     def get_frame(self, master):
@@ -37,7 +35,7 @@ class Plugin(PluginCore):
 
     def toggle_autoloot(self):
         print("toggle autoloot")
-        if self.autolootThread.autoloot.is_set():
+        if self.autolootThread.autoloot.is_set():  
             self.autolootThread.autoloot.clear()
         else:
             self.autolootThread.autoloot.set()
@@ -46,9 +44,10 @@ class Plugin(PluginCore):
         self.hotKeyButton.configure(text="Taper un raccourci...")
         self.master.update_idletasks()
         tempkey = keyboard.read_hotkey()
-        with open(self.currentDir + "\plugin_config.yml", 'w') as f:
-            yaml.dump({'hotkey': self.autolootKey}, f)
         keyboard.remap_hotkey(self.autolootKey, tempkey)
         self.autolootKey = tempkey
+        self.config['pluginConfig']['Autoloot']['hotkey'] = self.autolootKey
+        with open("config.yml", 'w') as f:
+            yaml.dump(self.config, f)
         self.hotKeyLabel.configure(text=self.autolootKey)
         self.hotKeyButton.configure(text="Modifier") 

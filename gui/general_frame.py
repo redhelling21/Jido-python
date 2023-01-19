@@ -6,6 +6,7 @@ from gui.components.generic_label import GenericLabel
 from gui.components.generic_combobox import GenericComboBox
 from gui.components.title_frame import TitleFrame
 import gui.main_window as mainwindow
+from array import array
 
 class GeneralFrame(Frame):
     def __init__(self, config, pluginmanager, master, *args, **kwargs):
@@ -13,14 +14,30 @@ class GeneralFrame(Frame):
         self.pluginManager = pluginmanager
         self.titleFrame = TitleFrame(self, 'Général')
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
-        self.pluginPackSelection = Frame(self, background=mainwindow.MAIN_BG)
-        self.pluginPackSelection.pack(side=TOP, pady=(0, 20))
-        self.pluginPackSelectionLabel = GenericLabel(self.pluginPackSelection, text='Choisir un pack :')
-        self.pluginPackSelectionLabel.pack(side=LEFT)
-        self.pluginPackSelectionBox = GenericComboBox(self.pluginPackSelection, values=["option 1", "option 2"])
-        self.pluginPackSelectionBox.pack(side=LEFT, padx=10)
-        self.pluginPackSelectionButton = GenericButton(self.pluginPackSelection, text="Charger")
-        self.pluginPackSelectionButton.pack(side=LEFT)
+        self.pluginPackGeneral = Frame(self, background=mainwindow.MAIN_BG)
+        self.pluginPackGeneral.pack(side=TOP, pady=(0,20))
+        self.pluginPackLabels = Frame(self.pluginPackGeneral, background=mainwindow.MAIN_BG)
+        self.pluginPackLabels.pack(side=LEFT)
+        self.pluginPackControls = Frame(self.pluginPackGeneral, background=mainwindow.MAIN_BG)
+        self.pluginPackControls.pack(side=LEFT, padx=10)
+        self.pluginPackButtons = Frame(self.pluginPackGeneral, background=mainwindow.MAIN_BG)
+        self.pluginPackButtons.pack(side=LEFT)
+
+        self.pluginPackSelectionLabel = GenericLabel(self.pluginPackLabels, text='Choisir un pack :')
+        self.pluginPackSelectionLabel.pack(side=TOP, anchor="e", pady=(0,15))
+        self.pluginPackCreationLabel = GenericLabel(self.pluginPackLabels, text='Enregistrer :')
+        self.pluginPackCreationLabel.pack(side=TOP, anchor="e")
+
+        self.loadedPluginPack = StringVar(value=config['activePluginPack'])
+        self.pluginPackSelectionBox = GenericComboBox(self.pluginPackControls, values=list(config['pluginPacks'].keys()), variable=self.loadedPluginPack)
+        self.pluginPackSelectionBox.pack(side=TOP, anchor="e", pady=(0,10))
+        self.pluginPackCreationEntry = GenericEntry(self.pluginPackControls)
+        self.pluginPackCreationEntry.pack(side=TOP, anchor="e")
+
+        self.pluginPackSelectionButton = GenericButton(self.pluginPackButtons, text="Appliquer")
+        self.pluginPackSelectionButton.pack(side=TOP, anchor="e", pady=(0,10))
+        self.pluginPackCreationButton = GenericButton(self.pluginPackButtons, text="Enregistrer")
+        self.pluginPackCreationButton.pack(side=TOP, anchor="e")
 
         self.imgChecked = PhotoImage(file='gui/assets/checked.png')
         self.imgUnChecked = PhotoImage(file='gui/assets/unchecked.png')
@@ -49,18 +66,14 @@ class GeneralFrame(Frame):
             self.pluginTable.insert('', 'end', value=(pluginName, pluginInfos.pluginDescription, pluginInfos.pluginVersion), tags="checked" if pluginInfos.isLoaded else "unchecked")
 
         self.pluginTable.column('#0', stretch='no', width=60)
-        self.pluginTable.column('#1', stretch='no', width=max(max_name_width, 60))
+        self.pluginTable.column('#1', stretch='no', width=max(max_name_width+10, 60))
         self.pluginTable.column('#2', stretch='yes', width=350)
-        self.pluginTable.column('#3', stretch='no', width=max(max_version_width, 60))
+        self.pluginTable.column('#3', stretch='no', width=max(max_version_width+10, 60))
 
-        self.pluginPackCreation = Frame(self, background=mainwindow.MAIN_BG)
-        self.pluginPackCreation.pack(side=TOP)
-        self.pluginPackCreationLabel = GenericLabel(self.pluginPackCreation, text='Enregistrer : ')
-        self.pluginPackCreationLabel.pack(side=LEFT)
-        self.pluginPackCreationEntry = GenericEntry(self.pluginPackCreation)
-        self.pluginPackCreationEntry.pack(side=LEFT, padx=10)
-        self.pluginPackCreationButton = GenericButton(self.pluginPackCreation, text="Enregistrer")
-        self.pluginPackCreationButton.pack(side=LEFT)
+        self.pluginLoading = Frame(self, background=mainwindow.MAIN_BG)
+        self.pluginLoading.pack(side=TOP)
+        self.pluginLoadingButton = GenericButton(self.pluginLoading, text="Charger les plugins sélectionnés")
+        self.pluginLoadingButton.pack(side=TOP)
 
     def checkRow(self, event):
         rowId = self.pluginTable.identify_row(event.y)

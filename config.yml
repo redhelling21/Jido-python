@@ -1,2 +1,8 @@
-pluginsToLoad:
-    - Autoloot
+activePluginPack: PoE
+pluginConfig:
+  Autoloot:
+    hotkey: K+maj
+pluginPacks:
+  PoE:
+  - Autoloot
+  - Bulk Identifier

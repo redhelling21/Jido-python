@@ -22,8 +22,8 @@ class PluginManager():
             pluginInfos.pluginVersion = infos['version']
             pluginInfos.isLoaded = False
             self.availablePlugins[pluginInfos.pluginName] = pluginInfos
-        for pluginToLoad in config['pluginsToLoad'] :
-            self.loadedPlugins[pluginToLoad] = importlib.import_module(self.availablePlugins[pluginToLoad].pluginPath).Plugin()
+        for pluginToLoad in config['pluginPacks'][config['activePluginPack']] :
+            self.loadedPlugins[pluginToLoad] = importlib.import_module(self.availablePlugins[pluginToLoad].pluginPath).Plugin(config)
             self.availablePlugins[pluginToLoad].isLoaded = True
 
 

@@ -36,7 +36,6 @@ class AutoLootThread(Thread):
                         continue
                     approx = cv2.approxPolyDP(contour, 0.01*cv2.arcLength(contour, True), True)
                     if len(approx) >= 4 and len(approx) <= 50:
-                        cv2.drawContours(mask, [contour], 0, (0, 50, 200), 2)
                         foundThingToClick = True
 
                         # find center of the loot
