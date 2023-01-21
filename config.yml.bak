@@ -5,4 +5,4 @@ pluginConfig:
 pluginPacks:
   PoE:
   - Autoloot
-  - Mass Item Identifier
+  - Bulk Identifier

@@ -1,16 +1,21 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from gui.components.generic_button import GenericButton
 from gui.components.generic_entry import GenericEntry
 from gui.components.generic_label import GenericLabel
 from gui.components.generic_combobox import GenericComboBox
+from gui.components.hotkey_frame import HotKeyFrame
 from gui.components.title_frame import TitleFrame
 import gui.main_window as mainwindow
 from array import array
+import keyboard
+import yaml
 
 class GeneralFrame(Frame):
     def __init__(self, config, pluginmanager, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
+        self.config = config
         self.pluginManager = pluginmanager
         self.titleFrame = TitleFrame(self, 'Général')
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
@@ -55,7 +60,7 @@ class GeneralFrame(Frame):
         self.pluginTable.heading(3, text="Version")
 
         self.pluginTable.pack(side=TOP, pady=(0, 20))
-        self.pluginTable.bind('<Button 1>', self.checkRow)
+        self.pluginTable.bind('<Button 1>', self.check_row)
         max_name_width = 0
         max_version_width = 0
         for pluginName, pluginInfos in self.pluginManager.get_available_plugins().items():
@@ -75,7 +80,11 @@ class GeneralFrame(Frame):
         self.pluginLoadingButton = GenericButton(self.pluginLoading, text="Charger les plugins sélectionnés")
         self.pluginLoadingButton.pack(side=TOP)
 
-    def checkRow(self, event):
+        keyboard.add_hotkey(self.config['generalActivationKey'], self.toggle_general_macro)
+        self.hotKeyFrame = HotKeyFrame(self, 'generalActivationKey', 'Activer la macro :', self.toggle_general_macro, self.config)
+        self.hotKeyFrame.pack(side=TOP)
+
+    def check_row(self, event):
         rowId = self.pluginTable.identify_row(event.y)
         #TODO Simplifier
         tag = self.pluginTable.item(rowId, "tags")[0]
@@ -86,3 +95,6 @@ class GeneralFrame(Frame):
             self.pluginTable.item(rowId, tags="unchecked")
         else:
             self.pluginTable.item(rowId, tags="checked")
+
+    def toggle_general_macro(self):
+        messagebox.showinfo('coucou', 'coucou')

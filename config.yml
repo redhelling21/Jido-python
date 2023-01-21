@@ -1,7 +1,8 @@
 activePluginPack: PoE
+generalActivationKey: f7
 pluginConfig:
   Autoloot:
-    hotkey: K+maj
+    hotkey: maj+e
 pluginPacks:
   PoE:
   - Autoloot

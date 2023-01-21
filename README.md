@@ -1,7 +1,13 @@
 # jido
 Macro générique (mais un peu orientée PoE quand même)
 
-## Reste à faire
+
+## Features à faire
+
+	* Activation/désactivation générale
+	* HUD indiquant l'activation des features
+	* Chargement des plugins
+## Plugins à faire
 
 	* Gwennen
 	* Tujen
@@ -20,4 +26,3 @@ Macro générique (mais un peu orientée PoE quand même)
 	* Système pour détecter qu'on est en ville/hideout ou dans une map pour couper certains trucs
 	* Une macro pour la mécanique de league si besoin
 	* Mass chaos recipe ?
-	* HUD indiquant l'activation des features
