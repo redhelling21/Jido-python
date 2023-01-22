@@ -71,7 +71,7 @@ class AutoLootThread(Thread):
         ctypes.windll.user32.mouse_event(2, 0, 0, 0,0) # left down
         time.sleep(sleep)
         ctypes.windll.user32.mouse_event(4, 0, 0, 0,0) # left up
-
+        
     def mse(self, img1, img2):
         h, w = img1.shape
         if img1.shape != img2.shape:

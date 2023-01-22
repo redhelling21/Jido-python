@@ -1,8 +1,12 @@
 activePluginPack: PoE
+generalActivationKey: f7
 pluginConfig:
   Autoloot:
-    hotkey: K+maj
+    hotkey: f3
+  BulkItemClicker:
+    mode1Hotkey:f2
+    mode2Hotkey:ctrl+f2
 pluginPacks:
   PoE:
   - Autoloot
-  - Bulk Identifier
+  - Bulk Item Clicker

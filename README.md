@@ -4,11 +4,12 @@ Macro générique (mais un peu orientée PoE quand même)
 
 ## Features à faire
 
-	* Activation/désactivation générale
 	* HUD indiquant l'activation des features
 	* Chargement des plugins
+	* Ajouter un indicateur d'activation dans le menu pour chaque plugin
 ## Plugins à faire
-
+	* Autoloot
+		* Autoclick sur les chests
 	* Gwennen
 	* Tujen
 	* Currency spammer

@@ -98,6 +98,9 @@ class MainWindow(Toplevel):
         general_btn.pack(side=TOP, pady=2)
 
         #endregion
+
+        #region Plugins buttons
+
         for pluginName, plugin in self.loadedPlugins.items():
             img = customtkinter.CTkImage(pil.Image.open("plugins/"+pluginName+"/icon.png"))
             btn = MenuButton(
@@ -111,7 +114,7 @@ class MainWindow(Toplevel):
             btn.pack(side=TOP, pady=2)
 
         #endregion
-
+        #endregion
         #region Mainframe
 
         self.mainCanvas = Canvas(self.canvas, background=MAIN_BG, highlightthickness=0)

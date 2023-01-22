@@ -4,6 +4,7 @@ from tkinter import LEFT, Entry, Frame, Label, TOP, PhotoImage, StringVar, ttk
 import customtkinter
 from core.plugin_manager import PluginManager
 from gui.components.generic_button import GenericButton
+from gui.components.generic_label import GenericLabel
 from gui.components.hotkey_frame import HotKeyFrame
 import gui.main_window as mainwindow
 from PIL import Image
@@ -27,6 +28,12 @@ class Plugin(PluginCore):
         self.frame = Frame(master)
         self.titleFrame = TitleFrame(self.frame, 'Autoloot')
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
+        labelString = """
+        Clique automatiquement sur les loots encadrés d'une couleur spécifique (#FE00FE).
+        Dispose d'une option pour cliquer automatiquement sur les coffres spéciaux (expedition, blight...).
+        """
+        self.descriptionLabel = GenericLabel(self.frame, text=labelString)
+        self.descriptionLabel.pack(side=TOP)
         self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.Autoloot.hotkey', "Activer l'autoloot :", self.toggle_autoloot, self.config)
         self.hotKeyFrame.pack(side=TOP)
         return self.frame
