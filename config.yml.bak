@@ -4,9 +4,19 @@ pluginConfig:
   Autoloot:
     hotkey: f3
   BulkItemClicker:
-    mode1Hotkey:f2
-    mode2Hotkey:ctrl+f2
+    mode1Hotkey: f2
+    mode2Hotkey: maj+f2
+  InventoryEmptyer:
+    hotkey: f4
+    inventoryPosition:
+        topCorner:
+            x: 
+            y: 
+        bottomCorner:
+            x: 
+            y: 
 pluginPacks:
   PoE:
   - Autoloot
   - Bulk Item Clicker
+  - Inventory Emptyer

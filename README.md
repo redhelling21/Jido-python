@@ -3,7 +3,7 @@ Macro générique (mais un peu orientée PoE quand même)
 
 
 ## Features à faire
-
+	* Randomiser les temps d'attente, positions, etc
 	* HUD indiquant l'activation des features
 	* Chargement des plugins
 	* Ajouter un indicateur d'activation dans le menu pour chaque plugin
