@@ -16,6 +16,7 @@ class GeneralFrame(Frame):
     def __init__(self, config, pluginmanager, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.config = config
+        self.toggleMacro = False
         self.pluginManager = pluginmanager
         self.titleFrame = TitleFrame(self, 'Général')
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
@@ -97,4 +98,6 @@ class GeneralFrame(Frame):
             self.pluginTable.item(rowId, tags="checked")
 
     def toggle_general_macro(self):
-        messagebox.showinfo('coucou', 'coucou')
+        self.toggleMacro = not self.toggleMacro
+        for plugin in self.pluginManager.get_loaded_plugins().items():
+            plugin[1].toggle_macro(self.toggleMacro)

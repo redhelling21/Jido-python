@@ -16,6 +16,7 @@ from scalpl import Cut
 class Plugin(PluginCore):
     def __init__(self, config):
         self.config=config
+        self.toggleMacro = False
         self.configProxy=Cut(config)
         self.autolootThread = AutoLootThread()
         keyboard.add_hotkey(self.configProxy['pluginConfig.Autoloot.hotkey'], self.toggle_autoloot)
@@ -31,9 +32,12 @@ class Plugin(PluginCore):
         return self.frame
 
     def toggle_autoloot(self):
-        if self.autolootThread.autoloot.is_set():  
-            print("Autoloot OFF")
-            self.autolootThread.autoloot.clear()
-        else:
+        if (not self.autolootThread.autoloot.is_set()) and self.toggleMacro:  
             print("Autoloot ON")
             self.autolootThread.autoloot.set()
+        else:
+            print("Autoloot OFF")
+            self.autolootThread.autoloot.clear()
+    
+    def toggle_macro(self, toggle):
+        self.toggleMacro = toggle

@@ -22,3 +22,6 @@ class Plugin(PluginCore):
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
         
         return self.frame
+
+    def toggle_general_macro(self, toggle):
+        pass

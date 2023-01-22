@@ -6,5 +6,5 @@ class PluginCore():
     def get_frame(self, master):
         pass
 
-    def get_infos():
+    def toggle_macro(self, toggle):
         pass
