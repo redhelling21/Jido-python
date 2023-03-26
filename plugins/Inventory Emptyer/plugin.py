@@ -50,7 +50,7 @@ class Plugin(PluginCore):
         Attention : ne pas sélectionner l'ensemble de l'inventaire si vous voulez que certains colonnes ne soient pas traitées."""
         self.descriptionLabel = GenericLabel(self.frame, text=labelString)
         self.descriptionLabel.pack(side=TOP)
-        self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.InventoryEmptyer.hotkey', "Vider l'inventaire : ", self.empty_inventory, self.config)
+        self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.InventoryEmptyer.hotkey', "Vider l'inventaire : ", self.empty_inventory, self.config, pady=40)
         self.hotKeyFrame.pack(side=TOP)
         self.inventoryPositionFrame = Frame(self.frame, background=mainwindow.MAIN_BG)
         self.inventoryPositionFrame.pack(side=TOP)

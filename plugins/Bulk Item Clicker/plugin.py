@@ -40,9 +40,9 @@ class Plugin(PluginCore):
         Mode 2 : ctrl+click les items filtrés."""
         self.descriptionLabel = GenericLabel(self.frame, text=labelString)
         self.descriptionLabel.pack(side=TOP)
-        self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.BulkItemClicker.mode1Hotkey', "Mode 1 :", self.mode_1, self.config)
+        self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.BulkItemClicker.mode1Hotkey', "Mode 1 :", self.mode_1, self.config, pady=40)
         self.hotKeyFrame.pack(side=TOP)
-        self.hotKeyFrame2 = HotKeyFrame(self.frame, 'pluginConfig.BulkItemClicker.mode2Hotkey', "Mode 2 :", self.mode_2, self.config)
+        self.hotKeyFrame2 = HotKeyFrame(self.frame, 'pluginConfig.BulkItemClicker.mode2Hotkey', "Mode 2 :", self.mode_2, self.config, pady=40)
         self.hotKeyFrame2.pack(side=TOP)
         return self.frame
 

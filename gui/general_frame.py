@@ -82,7 +82,7 @@ class GeneralFrame(Frame):
         self.pluginLoadingButton.pack(side=TOP)
 
         keyboard.add_hotkey(self.config['generalActivationKey'], self.toggle_general_macro)
-        self.hotKeyFrame = HotKeyFrame(self, 'generalActivationKey', 'Activer la macro :', self.toggle_general_macro, self.config)
+        self.hotKeyFrame = HotKeyFrame(self, 'generalActivationKey', 'Activer la macro :', self.toggle_general_macro, self.config, pady=40)
         self.hotKeyFrame.pack(side=TOP)
 
     def check_row(self, event):

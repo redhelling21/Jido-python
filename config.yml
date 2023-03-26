@@ -1,6 +1,8 @@
 activePluginPack: PoE
 generalActivationKey: f7
 pluginConfig:
+  Autopress:
+    hotkey: q
   Autoloot:
     hotkey: f3
   BulkItemClicker:
@@ -20,3 +22,4 @@ pluginPacks:
   - Autoloot
   - Bulk Item Clicker
   - Inventory Emptyer
+  - Autopress

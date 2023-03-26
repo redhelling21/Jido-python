@@ -17,12 +17,10 @@ class HotKeyFrame(Frame):
         self.hotkey = self.configProxy[self.hotKeyConfigPath]
         self.hotkeyVar = StringVar(master, self.hotkey)
         self.master = master
-        self.hotKeyFrame = Frame(self.master, pady=40, background=mainwindow.MAIN_BG)
-        self.hotKeyFrame.pack(side=TOP)
-        self.hotkeyLabel = GenericLabel(self.hotKeyFrame, text=hotKeyDescription)
-        self.hotKeyEntry= GenericEntry(self.hotKeyFrame, textvariable=self.hotkeyVar)
-        self.hotKeyButton = GenericButton(self.hotKeyFrame, text="Enregistrer", command=self.hotkey_choice)
-        self.hotkeyLabel.pack(side=LEFT)
+        self.hotKeyLabel = GenericLabel(self, text=hotKeyDescription)
+        self.hotKeyEntry= GenericEntry(self, textvariable=self.hotkeyVar)
+        self.hotKeyButton = GenericButton(self, text="Enregistrer", command=self.hotkey_choice)
+        self.hotKeyLabel.pack(side=LEFT)
         self.hotKeyEntry.pack(side=LEFT, padx=10)
         self.hotKeyButton.pack(side=LEFT)
         
@@ -33,4 +31,4 @@ class HotKeyFrame(Frame):
         self.configProxy[self.hotKeyConfigPath] = self.hotkey
         with open("config.yml", 'w') as f:
             yaml.dump(self.config, f)
-        self.hotKeyFrame.focus()
+        self.focus()

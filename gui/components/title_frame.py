@@ -1,5 +1,8 @@
-from tkinter import TOP, Frame, Label
+from tkinter import LEFT, TOP, Frame, Label
+from gui.components.generic_entry import GenericEntry
+from gui.components.generic_label import GenericLabel
 import gui.main_window as mainwindow
+from gui.components.generic_button import GenericButton
 
 class TitleFrame(Frame):
     def __init__(self, master, title, *args, **kwargs):
