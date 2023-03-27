@@ -24,6 +24,7 @@ class HotKeyFrame(Frame):
         self.hotKeyEntry.pack(side=LEFT, padx=10)
         self.hotKeyButton.pack(side=LEFT)
         
+        
     def hotkey_choice(self):
         keyboard.remove_hotkey(self.hotkey)
         self.hotkey = self.hotkeyVar.get()
