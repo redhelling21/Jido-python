@@ -8,10 +8,11 @@ from scalpl import Cut
 import yaml
 
 class HotKeyFrame(Frame):
-    def __init__(self, master, hotKeyConfigPath, hotKeyDescription, toggledFunction, config, *args, **kwargs):
+    def __init__(self, master, hotKeyConfigPath, hotKeyDescription, toggledFunction, config, withHook=False, *args, **kwargs):
         super().__init__(master, background=mainwindow.MAIN_BG, *args, **kwargs)
         self.hotKeyConfigPath = hotKeyConfigPath
         self.config = config
+        self.withHook = withHook
         self.toggledFunction = toggledFunction
         self.configProxy = Cut(self.config)
         self.hotkey = self.configProxy[self.hotKeyConfigPath]
@@ -26,9 +27,13 @@ class HotKeyFrame(Frame):
         
         
     def hotkey_choice(self):
-        keyboard.remove_hotkey(self.hotkey)
+        if(self.withHook):
+            keyboard.unhook(self.hotkey)
+            keyboard.on_press_key(self.hotkeyVar.get(), self.toggledFunction)
+        else :
+            keyboard.remove_hotkey(self.hotkey)
+            keyboard.add_hotkey(self.hotkeyVar.get(), self.toggledFunction)
         self.hotkey = self.hotkeyVar.get()
-        keyboard.add_hotkey(self.hotkey, self.toggledFunction)
         self.configProxy[self.hotKeyConfigPath] = self.hotkey
         with open("config.yml", 'w') as f:
             yaml.dump(self.config, f)

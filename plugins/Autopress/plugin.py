@@ -12,7 +12,7 @@ from gui.components.generic_label import GenericLabel
 from gui.components.hotkey_frame import HotKeyFrame
 import gui.main_window as mainwindow
 from PIL import Image
-from plugins.Autopress.autopress_thread import AutoPressThread
+from plugins.Autopress.autopress_manager_thread import AutoPressManagerThread
 from gui.components.title_frame import TitleFrame
 import keyboard
 import yaml
@@ -24,10 +24,10 @@ class Plugin(PluginCore):
         self.config=config
         self.toggleMacro = False
         self.configProxy=Cut(config)
-        self.autopressThread = AutoPressThread()
+        self.autopressThread = AutoPressManagerThread()
         self.keys = {}
         self.keysFrames = {}
-        keyboard.add_hotkey(self.configProxy['pluginConfig.Autopress.hotkey'], self.toggle_autopress)
+        keyboard.on_press_key(self.configProxy['pluginConfig.Autopress.hotkey'], self.toggle_autopress)
         self.autopressThread.start()
 
     def get_frame(self, master):
@@ -42,7 +42,7 @@ class Plugin(PluginCore):
         """
         self.descriptionLabel = GenericLabel(self.frame, text=labelString)
         self.descriptionLabel.pack(side=TOP)
-        self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.Autopress.hotkey', "Activer l'autopress :", self.toggle_autopress, self.config)
+        self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.Autopress.hotkey', "Activer l'autopress :", self.toggle_autopress, self.config, True)
         self.hotKeyFrame.pack(side=TOP)
         self.pauseOnClickFrame = Frame (self.frame, background=mainwindow.MAIN_BG, pady=10)
         self.pauseOnClickLabel = GenericLabel(self.pauseOnClickFrame, text='Pause lors d\'un clic : ')
@@ -58,18 +58,19 @@ class Plugin(PluginCore):
         self.keysToPressFrame.pack(side=TOP)
         self.addKeysToPressButton = GenericButton(self.frame, text="Ajouter une touche", command=self.add_key_to_press)
         self.addKeysToPressButton.pack(side=TOP, pady=15)
+        self.saveKeysButton = GenericButton(self.frame, text="Sauver", command=self.save_keys)
+        self.saveKeysButton.pack(side=TOP, pady=15)
         return self.frame
 
-    def toggle_autopress(self):
-        if (not self.autopressThread.autopress.is_set()) and self.toggleMacro:  
-            print("Autopress ON")
-            self.autopressThread.autopress.set()
-        else:
-            print("Autopress OFF")
-            self.autopressThread.autopress.clear()
+    def toggle_autopress(self, truc):
+        print(truc)
+        print("registered q press")
+        if self.toggleMacro:
+            self.autopressThread.toggle_autopress()
     
     def toggle_macro(self, toggle):
         self.toggleMacro = toggle
+        self.autopressThread.toggle_macro(toggle)
 
     def add_key_to_press(self):
         id = uuid.uuid4().hex
@@ -99,3 +100,6 @@ class Plugin(PluginCore):
     #def print_all(self) :
     #    for key in self.keys:
     #        print (key + ' : ', self.keys[key][0].get() + ' ' + self.keys[key][1].get())
+
+    def save_keys(self):
+        self.autopressThread.keys = self.keys
