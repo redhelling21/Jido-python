@@ -13,6 +13,7 @@ from plugins.Autoloot.autoloot_thread import AutoLootThread
 from gui.components.title_frame import TitleFrame
 from gui.components.generic_label import GenericLabel
 import keyboard
+import mouse
 import yaml
 import numpy as np
 from PIL import ImageGrab
@@ -60,26 +61,24 @@ class Plugin(PluginCore):
         loc = np.where(res <= threshold)
         lastY = 0
         if mode == 1:
-            #Clic droit
-            ctypes.windll.user32.mouse_event(0x0008, 0, 0, 0, 0)
-            time.sleep(0.01)
-            ctypes.windll.user32.mouse_event(0x0010, 0, 0, 0, 0)
-            ctypes.windll.user32.keybd_event(0x10, 0, 0, 0) #maj down
+            mouse.press('right')
+            time.sleep(0.02)
+            mouse.release('right')
+            keyboard.press('maj')
         if mode == 2:
-            ctypes.windll.user32.keybd_event(0x11, 0, 0, 0) #CTRL is down
-            
+            keyboard.press('ctrl')
         for pt in zip(*loc[::-1]):  # Switch collumns and rows
             temp = pt[1] - lastY
             if temp > 5 or temp == 0:
                 lastY = pt[1]
-                ctypes.windll.user32.SetCursorPos(int(pt[0]), int(pt[1]))
-                ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0) # left down
+                mouse.move(int(pt[0]), int(pt[1]))
+                mouse.press() # left down
                 time.sleep(0.02)
-                ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0)
+                mouse.release()
                 time.sleep(0.2)
         
         if mode == 1:
-            ctypes.windll.user32.keybd_event(0x10, 0, 0x0002, 0) #CTRL is up
+            keyboard.release('maj')
         
         if mode == 2:
-            ctypes.windll.user32.keybd_event(0x11, 0, 0x0002, 0) #CTRL is up
+            keyboard.release('ctrl')

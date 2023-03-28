@@ -2,6 +2,7 @@ from threading import Thread, Event
 import numpy as np
 import time 
 import ctypes 
+import mouse
 import cv2
 from PIL import ImageGrab
 
@@ -49,7 +50,7 @@ class AutoLootThread(Thread):
                 if foundThingToClick:
                     vector = self.extrapolate(cXList, cYList, 1.1)
                     predictedPoint = cXList[len(cXList) - 1] + vector[0], cYList[len(cYList) - 1] + vector[1]
-                    ctypes.windll.user32.SetCursorPos(int(predictedPoint[0]), int(predictedPoint[1]))
+                    mouse.move(int(predictedPoint[0]), int(predictedPoint[1]))
                     self.leftClick()
             else:
                 self.last_mask = self.blank
@@ -68,9 +69,9 @@ class AutoLootThread(Thread):
 
     def leftClick(self, sleep=0.005):
         time.sleep(sleep)
-        ctypes.windll.user32.mouse_event(2, 0, 0, 0,0) # left down
+        mouse.press()
         time.sleep(sleep)
-        ctypes.windll.user32.mouse_event(4, 0, 0, 0,0) # left up
+        mouse.release()
         
     def mse(self, img1, img2):
         h, w = img1.shape

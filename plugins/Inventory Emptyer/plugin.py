@@ -13,6 +13,7 @@ from plugins.Autoloot.autoloot_thread import AutoLootThread
 from gui.components.title_frame import TitleFrame
 from gui.components.generic_label import GenericLabel
 import keyboard
+import mouse
 import yaml
 import numpy as np
 from PIL import ImageGrab
@@ -76,13 +77,13 @@ class Plugin(PluginCore):
             points = cv2.findNonZero(difference)
             x=points[0][0][0]
             y=points[0][0][1]
-            ctypes.windll.user32.SetCursorPos(int(self.topCornerPosition.x+x+10), int(self.topCornerPosition.y+y+10))
-            ctypes.windll.user32.keybd_event(0x11, 0, 0, 0) #CTRL is down
+            mouse.move(int(self.topCornerPosition.x+x+10), int(self.topCornerPosition.y+y+10))
+            keyboard.press('ctrl')
             time.sleep(0.005)
-            ctypes.windll.user32.mouse_event(0x0002, 0, 0, 0, 0) # left down
+            mouse.press()
             time.sleep(0.005)
-            ctypes.windll.user32.mouse_event(0x0004, 0, 0, 0, 0) # left up
-            ctypes.windll.user32.keybd_event(0x11, 0, 0x0002, 0) #CTRL is up
+            mouse.release()
+            keyboard.release('ctrl')
             time.sleep(0.1)
 
     def select_inventory_position(self):

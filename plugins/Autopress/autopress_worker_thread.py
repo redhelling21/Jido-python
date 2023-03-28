@@ -1,6 +1,7 @@
 import queue
 from threading import Thread, Event
 import unicodedata
+import keyboard
 import numpy as np
 import time 
 import ctypes 
@@ -16,9 +17,9 @@ class AutoPressWorkerThread(Thread):
     def run(self): 
         while not self.stop: 
             key = self.keyQueue.get()
-            ctypes.windll.user32.keybd_event(key, 0, 0, 0)
+            keyboard.press(key)
             time.sleep(0.02)
-            ctypes.windll.user32.keybd_event(key, 0, 0x0002, 0)
+            keyboard.release(key)
             time.sleep(0.3)
     
     def join(self, timeout=None): 
