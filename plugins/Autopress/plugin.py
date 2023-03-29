@@ -1,4 +1,5 @@
 import pathlib
+import time
 
 import PIL
 from core.plugin_core import PluginCore
@@ -15,6 +16,7 @@ from PIL import Image
 from plugins.Autopress.autopress_manager_thread import AutoPressManagerThread
 from gui.components.title_frame import TitleFrame
 import keyboard
+import mouse
 import yaml
 from scalpl import Cut
 import uuid
@@ -28,11 +30,15 @@ class Plugin(PluginCore):
         self.keys = {}
         self.keysFrames = {}
         keyboard.on_press_key(self.configProxy['pluginConfig.Autopress.hotkey'], self.toggle_autopress)
+        self.clickHandler = mouse.on_click(self.click_during_pause)
+        self.currentClicks = 0
         self.autopressThread.start()
 
     def get_frame(self, master):
         self.master = master
         self.frame = Frame(master)
+        self.clickOnPauseDelay = StringVar(self.frame, '')
+        self.clickOnPauseToggle = StringVar(self.frame, 0)
         self.titleFrame = TitleFrame(self.frame, 'Autopress')
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
         labelString = """
@@ -46,9 +52,9 @@ class Plugin(PluginCore):
         self.hotKeyFrame.pack(side=TOP)
         self.pauseOnClickFrame = Frame (self.frame, background=mainwindow.MAIN_BG, pady=10)
         self.pauseOnClickLabel = GenericLabel(self.pauseOnClickFrame, text='Pause lors d\'un clic : ')
-        self.pauseOnClickEntry = GenericEntry(self.pauseOnClickFrame)
+        self.pauseOnClickEntry = GenericEntry(self.pauseOnClickFrame, textvariable=self.clickOnPauseDelay)
         self.pauseOnClickMsLabel = GenericLabel(self.pauseOnClickFrame, text='ms')
-        self.pauseOnClickCheckBox = GenericCheckBox(self.pauseOnClickFrame, text="Activer")
+        self.pauseOnClickCheckBox = GenericCheckBox(self.pauseOnClickFrame, text="Activer", variable=self.clickOnPauseToggle)
         self.pauseOnClickLabel.pack(side=LEFT)
         self.pauseOnClickEntry.pack(side=LEFT)
         self.pauseOnClickMsLabel.pack(side=LEFT)
@@ -63,8 +69,6 @@ class Plugin(PluginCore):
         return self.frame
 
     def toggle_autopress(self, truc):
-        print(truc)
-        print("registered q press")
         if self.toggleMacro:
             self.autopressThread.toggle_autopress()
     
@@ -96,10 +100,10 @@ class Plugin(PluginCore):
         self.keysFrames[id].pack_forget()
         self.keysFrames[id].destroy()
         self.keysFrames.pop(id)
-    
-    #def print_all(self) :
-    #    for key in self.keys:
-    #        print (key + ' : ', self.keys[key][0].get() + ' ' + self.keys[key][1].get())
 
     def save_keys(self):
         self.autopressThread.keys = self.keys
+
+    def click_during_pause(self):
+        if int(self.clickOnPauseToggle.get()) == 1:
+            self.autopressThread.reset_click_timer(int(self.clickOnPauseDelay.get()))
