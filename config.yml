@@ -1,10 +1,18 @@
 activePluginPack: PoE
 generalActivationKey: f7
 pluginConfig:
-  Autopress:
-    hotkey: q
   Autoloot:
     hotkey: f3
+  Autopress:
+    clickOnPause:
+      activated: 1
+      delay: 1200
+    hotkey: q
+    keys:
+    - key: a
+      key_delay: 0
+    - key: z
+      key_delay: 0
   BulkItemClicker:
     mode1Hotkey: f2
     mode2Hotkey: maj+f2

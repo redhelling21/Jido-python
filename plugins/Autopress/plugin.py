@@ -37,8 +37,8 @@ class Plugin(PluginCore):
     def get_frame(self, master):
         self.master = master
         self.frame = Frame(master)
-        self.clickOnPauseDelay = StringVar(self.frame, '')
-        self.clickOnPauseToggle = StringVar(self.frame, 0)
+        self.clickOnPauseDelay = StringVar(self.frame, self.configProxy.get('pluginConfig.Autopress.clickOnPause.delay', '1200'))
+        self.clickOnPauseToggle = StringVar(self.frame, self.configProxy.get('pluginConfig.Autopress.clickOnPause.activated', '0'))
         self.titleFrame = TitleFrame(self.frame, 'Autopress')
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
         labelString = """
@@ -54,7 +54,7 @@ class Plugin(PluginCore):
         self.pauseOnClickLabel = GenericLabel(self.pauseOnClickFrame, text='Pause lors d\'un clic : ')
         self.pauseOnClickEntry = GenericEntry(self.pauseOnClickFrame, textvariable=self.clickOnPauseDelay)
         self.pauseOnClickMsLabel = GenericLabel(self.pauseOnClickFrame, text='ms')
-        self.pauseOnClickCheckBox = GenericCheckBox(self.pauseOnClickFrame, text="Activer", variable=self.clickOnPauseToggle)
+        self.pauseOnClickCheckBox = GenericCheckBox(self.pauseOnClickFrame, text="Activer", variable=self.clickOnPauseToggle, onvalue='1', offvalue='0')
         self.pauseOnClickLabel.pack(side=LEFT)
         self.pauseOnClickEntry.pack(side=LEFT)
         self.pauseOnClickMsLabel.pack(side=LEFT)
@@ -64,8 +64,10 @@ class Plugin(PluginCore):
         self.keysToPressFrame.pack(side=TOP)
         self.addKeysToPressButton = GenericButton(self.frame, text="Ajouter une touche", command=self.add_key_to_press)
         self.addKeysToPressButton.pack(side=TOP, pady=15)
-        self.saveKeysButton = GenericButton(self.frame, text="Sauver", command=self.save_keys)
+        self.saveKeysButton = GenericButton(self.frame, text="Sauver", command=self.save_config)
         self.saveKeysButton.pack(side=TOP, pady=15)
+        for key in self.configProxy.get('pluginConfig.Autopress.keys', ''):
+            self.add_key_to_press(key=key['key'], delay=key['key_delay'])
         return self.frame
 
     def toggle_autopress(self, truc):
@@ -76,9 +78,9 @@ class Plugin(PluginCore):
         self.toggleMacro = toggle
         self.autopressThread.toggle_macro(toggle)
 
-    def add_key_to_press(self):
+    def add_key_to_press(self, key='', delay=''):
         id = uuid.uuid4().hex
-        self.keys[id] = (StringVar(self.frame, ''), StringVar(self.frame, ''))
+        self.keys[id] = (StringVar(self.frame, key), StringVar(self.frame, delay))
         frame = Frame(self.keysToPressFrame, name=id, background=mainwindow.MAIN_BG, pady=2)
         labelKey = GenericLabel(frame, text='Touche')
         entryKey = GenericEntry(frame, textvariable=self.keys[id][0], width = 70)
@@ -101,8 +103,15 @@ class Plugin(PluginCore):
         self.keysFrames[id].destroy()
         self.keysFrames.pop(id)
 
-    def save_keys(self):
+    def save_config(self):
         self.autopressThread.keys = self.keys
+        tempKeyDict = []
+        for key in self.keys:
+            tempKeyDict.append({'key':self.keys[key][0].get(), 'key_delay': int(self.keys[key][1].get())}) 
+        self.configProxy['pluginConfig.Autopress.keys'] = tempKeyDict
+        self.configProxy['pluginConfig.Autopress.clickOnPause'] = {'activated': int(self.clickOnPauseToggle.get()), 'delay': int(self.clickOnPauseDelay.get())}
+        with open("config.yml", 'w') as f:
+            yaml.dump(self.config, f)
 
     def click_during_pause(self):
         if int(self.clickOnPauseToggle.get()) == 1:
