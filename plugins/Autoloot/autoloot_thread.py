@@ -21,7 +21,9 @@ class AutoLootThread(Thread):
                 cYList = []
                 img = np.array(ImageGrab.grab())
                 img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-                mask = cv2.inRange(img, (234, 0, 234), (255, 20, 255))
+                maskLoot = cv2.inRange(img, (253, 0, 253), (255, 20, 255))
+                maskExpedition = cv2.inRange(img, (253, 176, 114), (255, 179, 116))
+                mask = maskLoot | maskExpedition
                 error = self.mse(mask, self.last_mask)
                 
                 self.last_mask = mask

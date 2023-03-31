@@ -11,8 +11,10 @@ pluginConfig:
     keys:
     - key: a
       key_delay: 0
-    - key: z
+    - key: r
       key_delay: 0
+    - key: t
+      key_delay: 19000
   BulkItemClicker:
     mode1Hotkey: f2
     mode2Hotkey: maj+f2
@@ -20,11 +22,11 @@ pluginConfig:
     hotkey: f4
     inventoryPosition:
       bottomCorner:
-        x: 2544
-        y: 1138
+        x: 2538
+        y: 1134
       topCorner:
-        x: 1836
-        y: 777
+        x: 1838
+        y: 785
 pluginPacks:
   PoE:
   - Autoloot

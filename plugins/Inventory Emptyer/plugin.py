@@ -125,6 +125,6 @@ class Plugin(PluginCore):
         self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.y'] = bpoint.y
 
         self.emptyInventory = np.array(ImageGrab.grab(bbox=(tpoint.x,tpoint.y,bpoint.x,bpoint.y)))
-        cv2.imwrite(self.emptyInventoryPath, self.empty_inventory)
+        cv2.imwrite(self.emptyInventoryPath, self.emptyInventory)
         with open("config.yml", 'w') as f:
             yaml.dump(self.config, f)
