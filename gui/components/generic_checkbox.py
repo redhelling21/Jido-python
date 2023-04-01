@@ -12,5 +12,7 @@ class GenericCheckBox(CTkCheckBox):
         checkbox_height=20,
         text_color='black',
         border_width=2,
+        onvalue='1',
+        offvalue='0',
         *args,
         **kwargs)

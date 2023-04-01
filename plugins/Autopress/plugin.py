@@ -54,7 +54,7 @@ class Plugin(PluginCore):
         self.pauseOnClickLabel = GenericLabel(self.pauseOnClickFrame, text='Pause lors d\'un clic : ')
         self.pauseOnClickEntry = GenericEntry(self.pauseOnClickFrame, textvariable=self.clickOnPauseDelay)
         self.pauseOnClickMsLabel = GenericLabel(self.pauseOnClickFrame, text='ms')
-        self.pauseOnClickCheckBox = GenericCheckBox(self.pauseOnClickFrame, text="Activer", variable=self.clickOnPauseToggle, onvalue='1', offvalue='0')
+        self.pauseOnClickCheckBox = GenericCheckBox(self.pauseOnClickFrame, text="Activer", variable=self.clickOnPauseToggle)
         self.pauseOnClickLabel.pack(side=LEFT)
         self.pauseOnClickEntry.pack(side=LEFT)
         self.pauseOnClickMsLabel.pack(side=LEFT)

@@ -13,6 +13,11 @@ class AutoLootThread(Thread):
         self.autoloot = Event()
         self.blank = np.zeros((5,5,3), np.uint8)
         self.last_mask = self.blank
+        self.lootExpedition = 0
+        self.lootBreach = 0
+        self.lootLegion = 0
+        self.lootHeist = 0
+        self.lootBlight = 0
 
     def run(self): 
         while not self.stop: 
@@ -21,9 +26,17 @@ class AutoLootThread(Thread):
                 cYList = []
                 img = np.array(ImageGrab.grab())
                 img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-                maskLoot = cv2.inRange(img, (253, 0, 253), (255, 20, 255))
-                maskExpedition = cv2.inRange(img, (253, 176, 114), (255, 179, 116))
-                mask = maskLoot | maskExpedition
+                mask = cv2.inRange(img, (253, 0, 253), (255, 20, 255))
+                if self.lootExpedition == 1:
+                    mask = mask | cv2.inRange(img, (253, 176, 114), (255, 179, 116))
+                if self.lootBlight == 1:
+                    mask = mask | cv2.inRange(img, (0, 203, 253), (1, 205, 255))
+                if self.lootLegion == 1:
+                    mask = mask | cv2.inRange(img, (254, 254, 254), (255, 255, 255))
+                if self.lootBreach == 1:
+                    mask = mask | cv2.inRange(img, (0, 0, 174), (1, 1, 176))
+                if self.lootHeist == 1:
+                    mask = mask | cv2.inRange(img, (21, 21, 172), (23, 23, 174))
                 error = self.mse(mask, self.last_mask)
                 
                 self.last_mask = mask

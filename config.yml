@@ -2,6 +2,12 @@ activePluginPack: PoE
 generalActivationKey: f7
 pluginConfig:
   Autoloot:
+    chests:
+      blight: '0'
+      breach: '0'
+      expedition: '0'
+      heist: '0'
+      legion: '0'
     hotkey: f3
   Autopress:
     clickOnPause:
