@@ -1,0 +1,8 @@
+customtkinter==5.0.3
+keyboard==0.13.5
+mouse==0.7.1
+numpy==1.24.1
+opencv_python==4.7.0.68
+Pillow==9.5.0
+PyYAML==6.0
+scalpl==0.4.2
