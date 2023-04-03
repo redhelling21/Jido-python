@@ -68,6 +68,7 @@ class Plugin(PluginCore):
         self.saveKeysButton.pack(side=TOP, pady=15)
         for key in self.configProxy.get('pluginConfig.Autopress.keys', ''):
             self.add_key_to_press(key=key['key'], delay=key['key_delay'])
+        self.autopressThread.keys = self.keys
         return self.frame
 
     def toggle_autopress(self, truc):
@@ -80,7 +81,7 @@ class Plugin(PluginCore):
 
     def add_key_to_press(self, key='', delay=''):
         id = uuid.uuid4().hex
-        self.keys[id] = (StringVar(self.frame, key), StringVar(self.frame, delay))
+        self.keys[id] = [StringVar(self.frame, key), StringVar(self.frame, delay), 0]
         frame = Frame(self.keysToPressFrame, name=id, background=mainwindow.MAIN_BG, pady=2)
         labelKey = GenericLabel(frame, text='Touche')
         entryKey = GenericEntry(frame, textvariable=self.keys[id][0], width = 70)

@@ -4,6 +4,7 @@ import numpy as np
 import time 
 import ctypes 
 import cv2
+import random
 from PIL import ImageGrab
 from plugins.Autopress.autopress_worker_thread import AutoPressWorkerThread
 
@@ -18,10 +19,10 @@ class AutoPressManagerThread(Thread):
         self.clickTimer = 0
         self.lock = Lock()
         self.keys = {}
+        self.msCount = 0
 
     def run(self): 
         starttime = time.time()
-        msCount = 0
         while not self.stop: 
             if self.autopress.wait(1):
                 if(self.clickTimer != 0):
@@ -31,10 +32,15 @@ class AutoPressManagerThread(Thread):
                         for key in self.keys:
                             if int(self.keys[key][1].get()) == 0:
                                 keyboard.press(self.keys[key][0].get())
-                for key in self.keys:
-                    if int(self.keys[key][1].get()) != 0 and msCount % int(self.keys[key][1].get()) == 0:
-                        self.autopressWorkerThread.keyQueue.put(self.keys[key][0].get())
-                msCount += 100
+                            else :
+                                self.keys[key][2] = 0
+                        self.msCount = 0
+                else:
+                    for key in self.keys:
+                        if int(self.keys[key][1].get()) != 0 and self.msCount >= self.keys[key][2]:
+                            self.autopressWorkerThread.keyQueue.put(self.keys[key][0].get())
+                            self.keys[key][2] += int(self.keys[key][1].get()) * random.uniform(0.9, 1.1)
+                    self.msCount += 100
                 time.sleep(0.1 - ((time.time() - starttime) % 0.1))
     
     def join(self, timeout=None): 
@@ -47,6 +53,9 @@ class AutoPressManagerThread(Thread):
             for key in self.keys:
                 if int(self.keys[key][1].get()) == 0:
                     keyboard.press(self.keys[key][0].get()) # Release all registered keys
+                else :
+                    self.keys[key][2] = 0
+            self.msCount = 0
             self.autopress.set()
         else:
             print("Autopress OFF")
