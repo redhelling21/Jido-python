@@ -7,7 +7,7 @@ import customtkinter
 from core.plugin_manager import PluginManager
 from gui.components.generic_button import GenericButton
 from gui.components.hotkey_frame import HotKeyFrame
-import gui.main_window as mainwindow
+from gui.constants import *
 from PIL import Image
 from plugins.Autoloot.autoloot_thread import AutoLootThread
 from gui.components.title_frame import TitleFrame
@@ -53,7 +53,7 @@ class Plugin(PluginCore):
         self.descriptionLabel.pack(side=TOP)
         self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.InventoryEmptyer.hotkey', "Vider l'inventaire : ", self.empty_inventory, self.config, pady=40)
         self.hotKeyFrame.pack(side=TOP)
-        self.inventoryPositionFrame = Frame(self.frame, background=mainwindow.MAIN_BG)
+        self.inventoryPositionFrame = Frame(self.frame, background=MAIN_BG)
         self.inventoryPositionFrame.pack(side=TOP)
         topCorner = "Coin haut gauche : " + str(self.topCornerPosition.x) + ", " + str(self.topCornerPosition.y)
         bottomCorner = "Coin bas droite : " + str(self.bottomCornerPosition.x) + ", " + str(self.bottomCornerPosition.y)
@@ -87,30 +87,30 @@ class Plugin(PluginCore):
             time.sleep(0.1)
 
     def select_inventory_position(self):
-        self.inventoryPositionButton.configure(text="Haut droit dans 3...")
+        self.inventoryPositionButton.configure(text="Haut gauche dans 3...")
         self.master.update_idletasks()
         time.sleep(1)
-        self.inventoryPositionButton.configure(text="Haut droit dans 2...")
+        self.inventoryPositionButton.configure(text="Haut gauche dans 2...")
         self.master.update_idletasks()
         time.sleep(1)
-        self.inventoryPositionButton.configure(text="Haut droit dans 1...")
+        self.inventoryPositionButton.configure(text="Haut gauche dans 1...")
         self.master.update_idletasks()
         time.sleep(1)
         tpoint = POINT()
         ctypes.windll.user32.GetCursorPos(ctypes.byref(tpoint))
         self.topCornerPositionLabel.configure(text="Coin haut gauche : " + str(tpoint.x)  + ", " + str(tpoint.y))
-        self.inventoryPositionButton.configure(text="Bas gauche dans 3...")
+        self.inventoryPositionButton.configure(text="Bas droite dans 3...")
         self.master.update_idletasks()
         time.sleep(1)
-        self.inventoryPositionButton.configure(text="Bas gauche dans 2...")
+        self.inventoryPositionButton.configure(text="Bas droite dans 2...")
         self.master.update_idletasks()
         time.sleep(1)
-        self.inventoryPositionButton.configure(text="Bas gauche dans 1...")
+        self.inventoryPositionButton.configure(text="Bas droite dans 1...")
         self.master.update_idletasks()
         time.sleep(1)
         bpoint = POINT()
         ctypes.windll.user32.GetCursorPos(ctypes.byref(bpoint))
-        self.bottomCornerPositionLabel.configure(text="Coin haut gauche : " + str(bpoint.x)  + ", " + str(bpoint.y))
+        self.bottomCornerPositionLabel.configure(text="Coin bas droite : " + str(bpoint.x)  + ", " + str(bpoint.y))
         self.inventoryPositionButton.configure(text="Modifier...")
         self.master.update_idletasks()
 
