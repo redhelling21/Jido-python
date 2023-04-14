@@ -12,6 +12,7 @@ class AutoLootThread(Thread):
         self.stop = False 
         self.autoloot = Event()
         self.blank = np.zeros((5,5,3), np.uint8)
+        self.currentlyRunning = False
         self.last_mask = self.blank
         self.lootExpedition = 0
         self.lootBreach = 0
@@ -21,7 +22,7 @@ class AutoLootThread(Thread):
 
     def run(self): 
         while not self.stop: 
-            if self.autoloot.wait(1):  
+            if self.autoloot.wait(1) and self.currentlyRunning == False:  
                 cXList = []
                 cYList = []
                 img = np.array(ImageGrab.grab())

@@ -7,7 +7,7 @@ from gui.components.generic_label import GenericLabel
 from gui.components.generic_combobox import GenericComboBox
 from gui.components.hotkey_frame import HotKeyFrame
 from gui.components.title_frame import TitleFrame
-import gui.main_window as mainwindow
+from gui.constants import *
 from array import array
 import keyboard
 import yaml
@@ -20,13 +20,13 @@ class GeneralFrame(Frame):
         self.pluginManager = pluginmanager
         self.titleFrame = TitleFrame(self, 'Général')
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
-        self.pluginPackGeneral = Frame(self, background=mainwindow.MAIN_BG)
+        self.pluginPackGeneral = Frame(self, background=MAIN_BG)
         self.pluginPackGeneral.pack(side=TOP, pady=(0,20))
-        self.pluginPackLabels = Frame(self.pluginPackGeneral, background=mainwindow.MAIN_BG)
+        self.pluginPackLabels = Frame(self.pluginPackGeneral, background=MAIN_BG)
         self.pluginPackLabels.pack(side=LEFT)
-        self.pluginPackControls = Frame(self.pluginPackGeneral, background=mainwindow.MAIN_BG)
+        self.pluginPackControls = Frame(self.pluginPackGeneral, background=MAIN_BG)
         self.pluginPackControls.pack(side=LEFT, padx=10)
-        self.pluginPackButtons = Frame(self.pluginPackGeneral, background=mainwindow.MAIN_BG)
+        self.pluginPackButtons = Frame(self.pluginPackGeneral, background=MAIN_BG)
         self.pluginPackButtons.pack(side=LEFT)
 
         self.pluginPackSelectionLabel = GenericLabel(self.pluginPackLabels, text='Choisir un pack :')
@@ -49,12 +49,12 @@ class GeneralFrame(Frame):
         self.imgUnChecked = PhotoImage(file='gui/assets/unchecked.png')
         self.pluginTable = ttk.Treeview(self, columns=(1, 2, 3))
         self.pluginTableStyle = ttk.Style(self.pluginTable)
-        self.pluginTableStyle.configure("Treeview.Heading", font=mainwindow.FONT_TABLE_HEADING)
+        self.pluginTableStyle.configure("Treeview.Heading", font=FONT_TABLE_HEADING)
         self.pluginTableStyle.configure('Treeview', rowheight=24)
         self.pluginTable.tag_configure('checked', image=self.imgChecked)
-        self.pluginTable.tag_configure('checked', font=mainwindow.FONT_TABLE)
+        self.pluginTable.tag_configure('checked', font=FONT_TABLE)
         self.pluginTable.tag_configure('unchecked', image=self.imgUnChecked)
-        self.pluginTable.tag_configure('unchecked', font=mainwindow.FONT_TABLE)
+        self.pluginTable.tag_configure('unchecked', font=FONT_TABLE)
 
         self.pluginTable.heading(1, text="Nom")
         self.pluginTable.heading(2, text="Description")
@@ -67,8 +67,8 @@ class GeneralFrame(Frame):
         for pluginName, pluginInfos in self.pluginManager.get_available_plugins().items():
             name = pluginName
             version = pluginInfos.pluginVersion
-            max_name_width = max(max_name_width, mainwindow.FONT_TABLE.measure(str(pluginName)))
-            max_version_width = max(max_version_width, mainwindow.FONT_TABLE.measure(str(pluginInfos.pluginVersion)))
+            max_name_width = max(max_name_width, FONT_TABLE.measure(str(pluginName)))
+            max_version_width = max(max_version_width, FONT_TABLE.measure(str(pluginInfos.pluginVersion)))
             self.pluginTable.insert('', 'end', value=(pluginName, pluginInfos.pluginDescription, pluginInfos.pluginVersion), tags="checked" if pluginInfos.isLoaded else "unchecked")
 
         self.pluginTable.column('#0', stretch='no', width=60)
@@ -76,7 +76,7 @@ class GeneralFrame(Frame):
         self.pluginTable.column('#2', stretch='yes', width=350)
         self.pluginTable.column('#3', stretch='no', width=max(max_version_width+10, 60))
 
-        self.pluginLoading = Frame(self, background=mainwindow.MAIN_BG)
+        self.pluginLoading = Frame(self, background=MAIN_BG)
         self.pluginLoading.pack(side=TOP)
         self.pluginLoadingButton = GenericButton(self.pluginLoading, text="Charger les plugins sélectionnés")
         self.pluginLoadingButton.pack(side=TOP)

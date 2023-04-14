@@ -7,7 +7,7 @@ import customtkinter
 from core.plugin_manager import PluginManager
 from gui.components.generic_button import GenericButton
 from gui.components.hotkey_frame import HotKeyFrame
-import gui.main_window as mainwindow
+from gui.constants import *
 from PIL import Image
 from plugins.Autoloot.autoloot_thread import AutoLootThread
 from gui.components.title_frame import TitleFrame

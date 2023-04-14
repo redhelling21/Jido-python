@@ -7,7 +7,7 @@ from gui.components.generic_button import GenericButton
 from gui.components.generic_checkbox import GenericCheckBox
 from gui.components.generic_label import GenericLabel
 from gui.components.hotkey_frame import HotKeyFrame
-import gui.main_window as mainwindow
+from gui.constants import *
 from PIL import Image
 from plugins.Autoloot.autoloot_thread import AutoLootThread
 from gui.components.title_frame import TitleFrame
@@ -44,7 +44,7 @@ class Plugin(PluginCore):
         self.hotKeyFrame.pack(side=TOP)
         self.chestsLabel = GenericLabel(self.frame, text='Clics sur les coffres spéciaux (~5ms chacun):')
         self.chestsLabel.pack(side=TOP, pady=(15, 5))
-        self.chestsFrame = Frame(self.frame, background=mainwindow.MAIN_BG)
+        self.chestsFrame = Frame(self.frame, background=MAIN_BG)
         self.chestsFrame.pack(side=TOP)
 
         self.expeditionCheckBox = GenericCheckBox(self.chestsFrame, text="Expedition chests", variable=self.shouldClickExpedition)

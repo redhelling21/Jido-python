@@ -3,7 +3,7 @@ generalActivationKey: f7
 pluginConfig:
   Autoloot:
     chests:
-      blight: '0'
+      blight: '1'
       breach: '0'
       expedition: '0'
       heist: '0'
@@ -17,10 +17,12 @@ pluginConfig:
     keys:
     - key: a
       key_delay: 0
-    - key: r
-      key_delay: 0
     - key: t
-      key_delay: 19000
+      key_delay: 17000
+    - key: z
+      key_delay: 0
+    - key: e
+      key_delay: 0
   BulkItemClicker:
     mode1Hotkey: f2
     mode2Hotkey: maj+f2
@@ -28,11 +30,11 @@ pluginConfig:
     hotkey: f4
     inventoryPosition:
       bottomCorner:
-        x: 2538
-        y: 1134
+        x: 2534
+        y: 1127
       topCorner:
-        x: 1838
-        y: 785
+        x: 1979
+        y: 790
 pluginPacks:
   PoE:
   - Autoloot

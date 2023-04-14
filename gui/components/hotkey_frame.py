@@ -2,14 +2,14 @@ from tkinter import LEFT, TOP, Frame, Label, StringVar
 from gui.components.generic_button import GenericButton
 from gui.components.generic_entry import GenericEntry
 from gui.components.generic_label import GenericLabel
-import gui.main_window as mainwindow
+from gui.constants import *
 import keyboard
 from scalpl import Cut
 import yaml
 
 class HotKeyFrame(Frame):
     def __init__(self, master, hotKeyConfigPath, hotKeyDescription, toggledFunction, config, withHook=False, *args, **kwargs):
-        super().__init__(master, background=mainwindow.MAIN_BG, *args, **kwargs)
+        super().__init__(master, background=MAIN_BG, *args, **kwargs)
         self.hotKeyConfigPath = hotKeyConfigPath
         self.config = config
         self.withHook = withHook

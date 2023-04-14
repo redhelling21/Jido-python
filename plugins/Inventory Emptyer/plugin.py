@@ -67,8 +67,9 @@ class Plugin(PluginCore):
 
     def empty_inventory(self):
         loops = 0
+        keyboard.press('ctrl')
         while(loops<60):
-            loops += loops
+            loops += 1
             img = np.array(ImageGrab.grab(bbox=(self.topCornerPosition.x,self.topCornerPosition.y,self.bottomCornerPosition.x,self.bottomCornerPosition.y)))
             difference = cv2.subtract(img, self.emptyInventory)
             difference = cv2.cvtColor(difference,cv2.COLOR_BGR2GRAY)
@@ -78,13 +79,10 @@ class Plugin(PluginCore):
             x=points[0][0][0]
             y=points[0][0][1]
             mouse.move(int(self.topCornerPosition.x+x+10), int(self.topCornerPosition.y+y+10))
-            keyboard.press('ctrl')
-            time.sleep(0.005)
-            mouse.press()
-            time.sleep(0.005)
-            mouse.release()
-            keyboard.release('ctrl')
             time.sleep(0.1)
+            mouse.click()
+            time.sleep(0.1)
+        keyboard.release('ctrl')
 
     def select_inventory_position(self):
         self.inventoryPositionButton.configure(text="Haut gauche dans 3...")
