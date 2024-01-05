@@ -5,7 +5,7 @@ pluginConfig:
     chests:
       blight: '1'
       breach: '0'
-      expedition: '0'
+      expedition: '1'
       heist: '0'
       legion: '0'
     hotkey: f3
@@ -17,27 +17,34 @@ pluginConfig:
     keys:
     - key: a
       key_delay: 0
-    - key: t
-      key_delay: 17000
-    - key: z
-      key_delay: 0
     - key: e
+      key_delay: 2000
+    - key: t
       key_delay: 0
+    - key: z
+      key_delay: 1300
   BulkItemClicker:
     mode1Hotkey: f2
     mode2Hotkey: maj+f2
+  DivcardHandler:
+    deckHotkey: f8
+    rewardHotkey: maj+f8
+    tradePosition:
+      x: 839
+      y: 982
   InventoryEmptyer:
     hotkey: f4
     inventoryPosition:
       bottomCorner:
         x: 2534
-        y: 1127
+        y: 1131
       topCorner:
-        x: 1979
-        y: 790
+        x: 1837
+        y: 786
 pluginPacks:
   PoE:
   - Autoloot
   - Bulk Item Clicker
   - Inventory Emptyer
   - Autopress
+  - Divcard Handler
