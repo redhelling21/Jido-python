@@ -18,31 +18,33 @@ import yaml
 import numpy as np
 from PIL import ImageGrab
 import cv2
-import os 
+import os
 from scalpl import Cut
+
+
 class POINT(ctypes.Structure):
     _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
 
+
 class Plugin(PluginCore):
     def __init__(self, config):
-        self.config=config
-        self.configProxy=Cut(config)
-        self.emptyInventoryPath = os.path.dirname(os.path.realpath(__file__)) + '/assets/empty_inv.png'
+        self.config = config
+        self.configProxy = Cut(config)
+        self.emptyInventoryPath = os.path.dirname(os.path.realpath(__file__)) + "/assets/empty_inv.png"
         self.emptyInventory = cv2.imread(self.emptyInventoryPath)
         self.topCornerPosition = POINT()
         self.bottomCornerPosition = POINT()
-        self.topCornerPosition.x = self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.topCorner.x']
-        self.topCornerPosition.y = self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.topCorner.y']
-        self.bottomCornerPosition.x = self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.x']
-        self.bottomCornerPosition.y = self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.y']
+        self.topCornerPosition.x = self.configProxy["pluginConfig.InventoryEmptyer.inventoryPosition.topCorner.x"]
+        self.topCornerPosition.y = self.configProxy["pluginConfig.InventoryEmptyer.inventoryPosition.topCorner.y"]
+        self.bottomCornerPosition.x = self.configProxy["pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.x"]
+        self.bottomCornerPosition.y = self.configProxy["pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.y"]
 
-
-        keyboard.add_hotkey(self.configProxy['pluginConfig.InventoryEmptyer.hotkey'], self.empty_inventory)
+        keyboard.add_hotkey(self.configProxy["pluginConfig.InventoryEmptyer.hotkey"], self.empty_inventory)
 
     def get_frame(self, master):
         self.master = master
         self.frame = Frame(master)
-        self.titleFrame = TitleFrame(self.frame, 'Inventory Emptyer')
+        self.titleFrame = TitleFrame(self.frame, "Inventory Emptyer")
         self.titleFrame.pack(side=TOP, fill="x", expand=True)
         labelString = """
         Vide l'inventaire en comparant l'inventaire vide avec l'inventaire actuel.
@@ -51,7 +53,9 @@ class Plugin(PluginCore):
         Attention : ne pas sélectionner l'ensemble de l'inventaire si vous voulez que certains colonnes ne soient pas traitées."""
         self.descriptionLabel = GenericLabel(self.frame, text=labelString)
         self.descriptionLabel.pack(side=TOP)
-        self.hotKeyFrame = HotKeyFrame(self.frame, 'pluginConfig.InventoryEmptyer.hotkey', "Vider l'inventaire : ", self.empty_inventory, self.config, pady=40)
+        self.hotKeyFrame = HotKeyFrame(
+            self.frame, "pluginConfig.InventoryEmptyer.hotkey", "Vider l'inventaire : ", self.empty_inventory, self.config, pady=40
+        )
         self.hotKeyFrame.pack(side=TOP)
         self.inventoryPositionFrame = Frame(self.frame, background=MAIN_BG)
         self.inventoryPositionFrame.pack(side=TOP)
@@ -66,23 +70,26 @@ class Plugin(PluginCore):
         return self.frame
 
     def empty_inventory(self):
+        print("Emptying inventory")
         loops = 0
-        keyboard.press('ctrl')
-        while(loops<60):
+        keyboard.press("ctrl")
+        while loops < 60:
             loops += 1
-            img = np.array(ImageGrab.grab(bbox=(self.topCornerPosition.x,self.topCornerPosition.y,self.bottomCornerPosition.x,self.bottomCornerPosition.y)))
+            img = np.array(
+                ImageGrab.grab(bbox=(self.topCornerPosition.x, self.topCornerPosition.y, self.bottomCornerPosition.x, self.bottomCornerPosition.y))
+            )
             difference = cv2.subtract(img, self.emptyInventory)
-            difference = cv2.cvtColor(difference,cv2.COLOR_BGR2GRAY)
+            difference = cv2.cvtColor(difference, cv2.COLOR_BGR2GRAY)
             if np.mean(difference) == 0:
                 break
             points = cv2.findNonZero(difference)
-            x=points[0][0][0]
-            y=points[0][0][1]
-            mouse.move(int(self.topCornerPosition.x+x+10), int(self.topCornerPosition.y+y+10))
+            x = points[0][0][0]
+            y = points[0][0][1]
+            mouse.move(int(self.topCornerPosition.x + x + 10), int(self.topCornerPosition.y + y + 10))
             time.sleep(0.1)
             mouse.click()
             time.sleep(0.1)
-        keyboard.release('ctrl')
+        keyboard.release("ctrl")
 
     def select_inventory_position(self):
         self.inventoryPositionButton.configure(text="Haut gauche dans 3...")
@@ -96,7 +103,7 @@ class Plugin(PluginCore):
         time.sleep(1)
         tpoint = POINT()
         ctypes.windll.user32.GetCursorPos(ctypes.byref(tpoint))
-        self.topCornerPositionLabel.configure(text="Coin haut gauche : " + str(tpoint.x)  + ", " + str(tpoint.y))
+        self.topCornerPositionLabel.configure(text="Coin haut gauche : " + str(tpoint.x) + ", " + str(tpoint.y))
         self.inventoryPositionButton.configure(text="Bas droite dans 3...")
         self.master.update_idletasks()
         time.sleep(1)
@@ -108,7 +115,7 @@ class Plugin(PluginCore):
         time.sleep(1)
         bpoint = POINT()
         ctypes.windll.user32.GetCursorPos(ctypes.byref(bpoint))
-        self.bottomCornerPositionLabel.configure(text="Coin bas droite : " + str(bpoint.x)  + ", " + str(bpoint.y))
+        self.bottomCornerPositionLabel.configure(text="Coin bas droite : " + str(bpoint.x) + ", " + str(bpoint.y))
         self.inventoryPositionButton.configure(text="Modifier...")
         self.master.update_idletasks()
 
@@ -117,12 +124,12 @@ class Plugin(PluginCore):
         self.bottomCornerPosition.x = bpoint.x
         self.bottomCornerPosition.y = bpoint.y
 
-        self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.topCorner.x'] = tpoint.x
-        self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.topCorner.y'] = tpoint.y
-        self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.x'] = bpoint.x
-        self.configProxy['pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.y'] = bpoint.y
+        self.configProxy["pluginConfig.InventoryEmptyer.inventoryPosition.topCorner.x"] = tpoint.x
+        self.configProxy["pluginConfig.InventoryEmptyer.inventoryPosition.topCorner.y"] = tpoint.y
+        self.configProxy["pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.x"] = bpoint.x
+        self.configProxy["pluginConfig.InventoryEmptyer.inventoryPosition.bottomCorner.y"] = bpoint.y
 
-        self.emptyInventory = np.array(ImageGrab.grab(bbox=(tpoint.x,tpoint.y,bpoint.x,bpoint.y)))
+        self.emptyInventory = np.array(ImageGrab.grab(bbox=(tpoint.x, tpoint.y, bpoint.x, bpoint.y)))
         cv2.imwrite(self.emptyInventoryPath, self.emptyInventory)
-        with open("config.yml", 'w') as f:
+        with open("config.yml", "w") as f:
             yaml.dump(self.config, f)
