@@ -16,6 +16,7 @@ class AutoLootThread(Thread):
         self.currentlyRunning = False
         self.last_mask = self.blank
         self.lootExpedition = 0
+        self.last_clicked_position = (0, 0)
         self.lootBreach = 0
         self.lootLegion = 0
         self.lootHeist = 0
@@ -30,7 +31,7 @@ class AutoLootThread(Thread):
                 img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 mask = cv2.inRange(img, (253, 0, 253), (255, 20, 255))
                 if self.lootExpedition == 1:
-                    mask = mask | cv2.inRange(img, (253, 176, 114), (255, 179, 116))
+                    mask = mask | cv2.inRange(img, (252, 175, 113), (255, 180, 117))
                 if self.lootBlight == 1:
                     mask = mask | cv2.inRange(img, (0, 203, 253), (1, 205, 255))
                 if self.lootLegion == 1:
@@ -67,11 +68,17 @@ class AutoLootThread(Thread):
                 if foundThingToClick:
                     vector = self.extrapolate(cXList, cYList, 1.1)
                     predictedPoint = cXList[len(cXList) - 1] + vector[0], cYList[len(cYList) - 1] + vector[1]
+                    if self.last_clicked_position[0] == predictedPoint[0] and self.last_clicked_position[1] == predictedPoint[1]:
+                        continue
                     mouse.move(int(predictedPoint[0]), int(predictedPoint[1]))
+                    self.last_clicked_position = (int(predictedPoint[0]), int(predictedPoint[1]))
                     self.leftClick()
+                    time.sleep(0.1)
+                else:
+                    time.sleep(0.3)
             else:
                 self.last_mask = self.blank
-                time.sleep(0.2)
+                time.sleep(1)
 
     def join(self, timeout=None):
         self.stop = True

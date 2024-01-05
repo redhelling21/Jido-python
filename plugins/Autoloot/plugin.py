@@ -61,6 +61,11 @@ class Plugin(PluginCore):
 
         self.saveChestsButton = GenericButton(self.frame, text="Sauver", command=self.save_config)
         self.saveChestsButton.pack(side=TOP, pady=15)
+        self.autolootThread.lootBlight = int(self.shouldClickBlight.get())
+        self.autolootThread.lootLegion = int(self.shouldClickLegion.get())
+        self.autolootThread.lootHeist = int(self.shouldClickHeist.get())
+        self.autolootThread.lootBreach = int(self.shouldClickBreach.get())
+        self.autolootThread.lootExpedition = int(self.shouldClickExpedition.get())
         return self.frame
 
     def toggle_autoloot(self):
