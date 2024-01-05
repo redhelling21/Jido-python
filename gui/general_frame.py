@@ -1,4 +1,4 @@
-from tkinter import Frame, StringVar, PhotoImage
+from tkinter import Frame, StringVar, PhotoImage, TOP, LEFT
 from tkinter import ttk
 from gui.components.generic_button import GenericButton
 from gui.components.generic_entry import GenericEntry
@@ -6,7 +6,7 @@ from gui.components.generic_label import GenericLabel
 from gui.components.generic_combobox import GenericComboBox
 from gui.components.hotkey_frame import HotKeyFrame
 from gui.components.title_frame import TitleFrame
-from gui.constants import TOP, LEFT, MAIN_BG, FONT_TABLE_HEADING, FONT_TABLE
+from gui.constants import MAIN_BG, FONT_TABLE_HEADING, FONT_TABLE
 import keyboard
 
 

@@ -1,9 +1,9 @@
-from tkinter import Canvas, Frame, PhotoImage, Label, Toplevel, X, Y
+from tkinter import Canvas, Frame, PhotoImage, Label, Toplevel, X, Y, TOP, LEFT, BOTH
 from tkinter import ttk
 import customtkinter
 import PIL as pil
 from gui.components.menu_button import MenuButton
-from gui.constants import SIDEBAR_SIZE, SIDE_MENU_BG, TOP, LEFT, ASSET_PATH, SIDE_MENU_BG_ACTIVE, MAIN_BG, BOTH, SIDE_MENU_BG_ACTIVE_HOVER
+from gui.constants import SIDEBAR_SIZE, SIDE_MENU_BG, ASSET_PATH, SIDE_MENU_BG_ACTIVE, MAIN_BG, SIDE_MENU_BG_ACTIVE_HOVER
 from gui.general_frame import GeneralFrame
 
 

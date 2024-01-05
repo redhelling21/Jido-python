@@ -1,7 +1,6 @@
 import tkinter as tk
 import yaml
 from core.plugin_manager import PluginManager
-from gui.hud import hud
 from gui.main_window import mainWindow
 
 
