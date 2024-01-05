@@ -1,11 +1,7 @@
 from threading import Lock, Thread, Event
 import keyboard
-import numpy as np
 import time
-import ctypes
-import cv2
 import random
-from PIL import ImageGrab
 from plugins.Autopress.autopress_worker_thread import AutoPressWorkerThread
 
 

@@ -1,5 +1,4 @@
-class PluginInfos():
-
+class PluginInfos:
     pluginName = ""
     pluginDescription = ""
     pluginVersion = ""

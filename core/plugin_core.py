@@ -1,5 +1,4 @@
-
-class PluginCore():
+class PluginCore:
     def __init__(self):
         pass
 

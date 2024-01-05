@@ -1,12 +1,7 @@
 import queue
-from threading import Thread, Event
-import unicodedata
+from threading import Thread
 import keyboard
-import numpy as np
 import time
-import ctypes
-import cv2
-from PIL import ImageGrab
 
 
 class AutoPressWorkerThread(Thread):

@@ -1,27 +1,16 @@
 import ctypes
-import pathlib
 import time
 from core.plugin_core import PluginCore
-from tkinter import LEFT, Entry, Frame, Label, TOP, PhotoImage, StringVar, ttk
-import customtkinter
-from core.plugin_manager import PluginManager
+from tkinter import Frame, TOP
 from gui.components.generic_button import GenericButton
 from gui.components.hotkey_frame import HotKeyFrame
-from gui.constants import *
-from PIL import Image
-from plugins.Autoloot.autoloot_thread import AutoLootThread
+from gui.constants import MAIN_BG
 from gui.components.title_frame import TitleFrame
 from gui.components.generic_label import GenericLabel
 import keyboard
 import mouse
 import yaml
-import numpy as np
-from PIL import ImageGrab
-import cv2
-import os
 from scalpl import Cut
-
-from utils.smooth_mouse import smooth_mouse_move
 
 
 class POINT(ctypes.Structure):

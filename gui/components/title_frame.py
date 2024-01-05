@@ -1,8 +1,6 @@
-from tkinter import LEFT, TOP, Frame, Label
-from gui.components.generic_entry import GenericEntry
-from gui.components.generic_label import GenericLabel
-from gui.constants import *
-from gui.components.generic_button import GenericButton
+from tkinter import TOP, Frame, Label
+from gui.constants import MAIN_BG, FONT_TITLE, SIDE_MENU_BG
+
 
 class TitleFrame(Frame):
     def __init__(self, master, title, *args, **kwargs):

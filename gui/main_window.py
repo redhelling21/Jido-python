@@ -1,14 +1,10 @@
-from pathlib import Path
-from tkinter import *
+from tkinter import Canvas, Frame, PhotoImage, Label, Toplevel, X, Y
 from tkinter import ttk
 import customtkinter
-from ctypes import windll
-import ctypes
 import PIL as pil
 from gui.components.menu_button import MenuButton
-from gui.constants import *
-from gui.general_frame import *
-from gui.hud import hud
+from gui.constants import SIDEBAR_SIZE, SIDE_MENU_BG, TOP, LEFT, ASSET_PATH, SIDE_MENU_BG_ACTIVE, MAIN_BG, BOTH, SIDE_MENU_BG_ACTIVE_HOVER
+from gui.general_frame import GeneralFrame
 
 
 def mainWindow(config, pluginManager, *args, **kwargs):

@@ -1,18 +1,11 @@
-import pathlib
-import time
-
-import PIL
 from core.plugin_core import PluginCore
-from tkinter import BOTTOM, LEFT, Entry, Frame, Label, TOP, PhotoImage, StringVar, ttk
-import customtkinter
-from core.plugin_manager import PluginManager
+from tkinter import LEFT, Frame, TOP, StringVar
 from gui.components.generic_button import GenericButton
 from gui.components.generic_checkbox import GenericCheckBox
 from gui.components.generic_entry import GenericEntry
 from gui.components.generic_label import GenericLabel
 from gui.components.hotkey_frame import HotKeyFrame
-from gui.constants import *
-from PIL import Image
+from gui.constants import MAIN_BG
 from plugins.Autopress.autopress_manager_thread import AutoPressManagerThread
 from gui.components.title_frame import TitleFrame
 import keyboard

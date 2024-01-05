@@ -1,7 +1,6 @@
 from threading import Thread, Event
 import numpy as np
 import time
-import ctypes
 import mouse
 import cv2
 from PIL import ImageGrab
@@ -24,7 +23,7 @@ class AutoLootThread(Thread):
 
     def run(self):
         while not self.stop:
-            if self.autoloot.wait(1) and self.currentlyRunning == False:
+            if self.autoloot.wait(1) and self.currentlyRunning is False:
                 cXList = []
                 cYList = []
                 img = np.array(ImageGrab.grab())
